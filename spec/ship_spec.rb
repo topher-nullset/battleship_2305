@@ -13,4 +13,15 @@ RSpec.describe Ship do
     end
   end
 
+  describe '#health' do
+    it 'has a health method' do
+      expect(@cruiser.health).to eq 3
+    end
+  end
+
+  describe '#sunk?' do
+    it 'can report sunk' do
+      expect(@cruiser.sunk?).to be false
+    end
+  end
 end
