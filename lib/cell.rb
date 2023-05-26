@@ -29,4 +29,18 @@ class Cell
     @fired_upon
   end
 
+  def render(hidden=false)
+    if !@ship.nil? && hidden == true 
+        "S"
+    elsif !@ship.nil? && @ship.sunk? == true
+        "X"
+    elsif @ship.nil? && fired_upon? == true
+        "M"
+    elsif !@ship.nil? && @ship.sunk? == false && fired_upon? == true
+        "H"
+    else
+        "."
+    end    
+  end
+
 end
