@@ -74,5 +74,39 @@ RSpec.describe Board do
       expect(cell_1.ship).to eq nil
       expect(cell_2.ship).to eq nil
     end
+
+    it 'cannot overlap ships' do
+      @board.place(@cruiser, ["A1", "A2", "A3"])
+      @board.place(@submarine, ["A1", "B1"])
+
+      expect(@board.cells["A1"].ship).to eq(@cruiser)
+      expect(@board.cells["B1"].ship).to eq nil
+    end
+  end
+
+  describe '#render' do
+    it 'renders the board without hidden information' do
+      @board.place(@cruiser, ["A1", "A2", "A3"])
+  
+      expected_output = "  1 2 3 4 \n" +
+                        "A . . . . \n" +
+                        "B . . . . \n" +
+                        "C . . . . \n" +
+                        "D . . . . \n"
+  
+      expect(@board.render).to eq(expected_output)
+    end
+  
+    it 'renders the board with hidden ships' do
+      @board.place(@cruiser, ["A1", "A2", "A3"])
+  
+      expected_output = "  1 2 3 4 \n" +
+                        "A S S S . \n" +
+                        "B . . . . \n" +
+                        "C . . . . \n" +
+                        "D . . . . \n"
+  
+      expect(@board.render(true)).to eq(expected_output)
+    end
   end
 end
