@@ -32,6 +32,15 @@ class Board
       non_diagonal_placement?(coordinates)
   end
 
+  def place(ship, coordinates)
+    if valid_placement?(ship, coordinates)
+      coordinates.each do |coord|
+      cell = @cells[coord] 
+      cell.place_ship(ship)
+      end
+    end
+  end
+
   private
 
   def correct_number_of_coordinates?(ship, coordinates)
