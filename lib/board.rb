@@ -29,9 +29,38 @@ class Board
   def valid_placement?(ship, coordinates)
     return false unless ship.length == coordinates.length
 
-    coordinates.each_cons(ship.length) do |coordinate|
+    board_letters = []
+    board_numbers = []
+    user_coordinate_letters = []
+    user_coordinate_numbers = []
+    @cells.each_cons(ship.length) do |coordinate|
+      coordinate.each do |cell|
+        board_letters << cell[0][0] 
+        board_numbers << cell[0][1] 
+      end
+      board_letters
+      board_numbers
+      board_letters.uniq.count == 1 || board_numbers.uniq.count == 1
+      coordinates.each do |user_coordinate|
+        user_coordinate_letters << user_coordinate[0]
+        user_coordinate_numbers << user_coordinate[1]
+      end
+      user_coordinate_letters
+      user_coordinate_numbers
+      require 'pry'; binding.pry
+
     end
+    
     
   end
 
+  # if all the ordinals are the same, or if all the ordinals are different they have to have the same cell number associated with them (to make sure that diagonals can't happen). If all the letters in a coordinate are the same, it would be valid, or if all the numbers are the same.
+
+  # Logic would allow for all numbers to be the same, as that would be a vertically placed ship, or for all letters to be the same, as that would be a horizontally placed ship. However, logic would NOT allow for differing numbers and letters, as that would mean diagonal placement.
+
+  # Comparison of all the cells.
+
+  # Do a .uniq.count == 1 to make sure that all letters are the same (allowing for horizontal placement). Also,you could also do a .uniq.count == 1 to make sure that all the numbers are the same (for a vertical placement).
+
+  # Letter is always at index position 0, and number is index position 1
 end
