@@ -29,7 +29,8 @@ class Board
   def valid_placement?(ship, coordinates)
     consecutive_coordinates?(coordinates) &&
       correct_number_of_coordinates?(ship, coordinates) &&
-      non_diagonal_placement?(coordinates)
+      non_diagonal_placement?(coordinates) &&
+      empty_cells?(coordinates)
   end
 
   def place(ship, coordinates)
@@ -41,7 +42,21 @@ class Board
     end
   end
 
+  def render(hidden = false)
+    header = "  1 2 3 4 \n"
+    rows = @cells.values.each_slice(4).map do |row_cells|
+      row_letter = row_cells.first.coordinate[0]
+      (row_letter + ' ' + row_cells.map { |cell| cell.render(hidden) }.join(' '))
+    end
+    header + rows.join(" \n") + " \n"
+  end
+  
+
   private
+
+  def empty_cells?(coordinates)
+    coordinates.all? { |coord| @cells[coord].empty? }
+  end
 
   def correct_number_of_coordinates?(ship, coordinates)
     ship.length == coordinates.length
