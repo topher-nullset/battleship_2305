@@ -1,6 +1,11 @@
 require './lib/cell'
 require './lib/ship'
 require './lib/board'
+require './lib/game'
+
+game = Game.new
+
+game.start
 
 # things we should think about before we start the runner file
 
