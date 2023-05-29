@@ -35,26 +35,43 @@ class Game
     p "Enter the squares for the cruiser THAT I WILL SINK! (3 spaces)."
     p "Please input your choice in the following format: A1 A2 A3"
 
-    user_input = gets.chomp.split
-    if @p1_board.valid_placement?(@p1_cruiser, user_input)
-      @p1_board.place(@p1_cruiser, user_input)
+    user_cruiser_choice = gets.chomp.split
+    if @p1_board.valid_placement?(@p1_cruiser, user_cruiser_choice)
+      @p1_board.place(@p1_cruiser, user_cruiser_choice)
       print @p1_board.render(true)
       p "Enter the squares for the submarine THAT I WILL DESTROY! (2 spaces)."
       p "Please input your choice in the following format, and be sure not to overlap your cruiser: B1 B2"
-      user_input = gets.chomp.split
-      @p1_board.place(@p1_submarine, user_input)
-      print @p1_board.render(true)
-      p "You have successfully placed your ships. PREPARE TO DIE!"
-      self.turn
     else
       p "Invalid placement. Try again."
       self.board_setup
+    end
+    user_submarine_choice = gets.chomp.split
+      if @p1_board.valid_placement?(@p1_submarine, user_submarine_choice)
+        @p1_board.place(@p1_submarine, user_submarine_choice)
+      else
+        p "Invalid placement. Try again."
+        self.board_setup
+      end
+      print @p1_board.render(true)
+      p "You have successfully placed your ships. PREPARE TO DIE!"
+
+      cpu_cruiser_choice = @cpu_board.cells.keys.sample(3)
+      if @cpu_board.valid_placement?(@cpu_cruiser, cpu_cruiser_choice) 
+        @cpu_board.place(@cpu_cruiser, cpu_crusier_choice)
+      end
+      cpu_submarine_choice = @cpu_board.cells.keys.sample(2)
+      if @cpu_board.valid_placement?(@cpu_submarine, cpu_submarine_choice) 
+        @cpu_board.place(@cpu_submarine, cpu_submarine_choice)
+      else
+      end
+      self.turn
     end
   end
 
   def turn
     puts "=============COMPUTER BOARD============="
-    print @cpu_board.render
+    # take out render true!
+    print @cpu_board.render(true)
     puts "==============PLAYER BOARD=============="
     print @p1_board.render(true)
     puts "Enter the coordinate for your shot with the letter followed by the number (i.e. D4):"
