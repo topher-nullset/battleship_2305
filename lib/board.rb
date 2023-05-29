@@ -27,40 +27,57 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
-    return false unless ship.length == coordinates.length
-
-    board_letters = []
-    board_numbers = []
-    user_coordinate_letters = []
-    user_coordinate_numbers = []
-    @cells.each_cons(ship.length) do |coordinate|
-      coordinate.each do |cell|
-        board_letters << cell[0][0] 
-        board_numbers << cell[0][1] 
-      end
-      board_letters
-      board_numbers
-      board_letters.uniq.count == 1 || board_numbers.uniq.count == 1
-      coordinates.each do |user_coordinate|
-        user_coordinate_letters << user_coordinate[0]
-        user_coordinate_numbers << user_coordinate[1]
-      end
-      user_coordinate_letters
-      user_coordinate_numbers
-      require 'pry'; binding.pry
-
-    end
-    
-    
+    consecutive_coordinates?(coordinates) &&
+      correct_number_of_coordinates?(ship, coordinates) &&
+      non_diagonal_placement?(coordinates) &&
+      empty_cells?(coordinates)
   end
 
-  # if all the ordinals are the same, or if all the ordinals are different they have to have the same cell number associated with them (to make sure that diagonals can't happen). If all the letters in a coordinate are the same, it would be valid, or if all the numbers are the same.
+  def place(ship, coordinates)
+    if valid_placement?(ship, coordinates)
+      coordinates.each do |coord|
+      cell = @cells[coord] 
+      cell.place_ship(ship)
+      end
+    end
+  end
 
-  # Logic would allow for all numbers to be the same, as that would be a vertically placed ship, or for all letters to be the same, as that would be a horizontally placed ship. However, logic would NOT allow for differing numbers and letters, as that would mean diagonal placement.
+  def render(hidden = false)
+    header = "  1 2 3 4 \n"
+    rows = @cells.values.each_slice(4).map do |row_cells|
+      row_letter = row_cells.first.coordinate[0]
+      (row_letter + ' ' + row_cells.map { |cell| cell.render(hidden) }.join(' '))
+    end
+    header + rows.join(" \n") + " \n"
+  end
+  
 
-  # Comparison of all the cells.
+  private
 
-  # Do a .uniq.count == 1 to make sure that all letters are the same (allowing for horizontal placement). Also,you could also do a .uniq.count == 1 to make sure that all the numbers are the same (for a vertical placement).
+  def empty_cells?(coordinates)
+    coordinates.all? { |coord| @cells[coord].empty? }
+  end
 
-  # Letter is always at index position 0, and number is index position 1
+  def correct_number_of_coordinates?(ship, coordinates)
+    ship.length == coordinates.length
+  end
+
+  def consecutive_coordinates?(coordinates)
+    letters = coordinates.map { |coord| coord[0] }
+    numbers = coordinates.map { |coord| coord[1..].to_i }
+
+    (letters.each_cons(2).all? { |a, b| b.ord == a.ord + 1 } || letters.uniq.length == 1) &&
+      (numbers.each_cons(2).all? { |a, b| b == a + 1 } || numbers.uniq.length == 1)
+  end
+
+  def non_diagonal_placement?(coordinates)
+    letters = coordinates.map { |coord| coord[0] }
+    numbers = coordinates.map { |coord| coord[1..].to_i }
+
+    letters.uniq.length == 1 || numbers.uniq.length == 1
+  end
+
+  # valid_placement? runs 3 different private methods to check each apspect of placement.
+  # coordiantes must be the right size, they must be consecutive and, cannot be diagonal.
+  # each method tests one of these aspects.
 end
