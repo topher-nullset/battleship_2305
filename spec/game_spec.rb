@@ -21,12 +21,12 @@ RSpec.describe Game do
       expect(@game.cpu_board.cells['A1']).to be_a(Cell)
     end
   end
-
-  # describe "#start" do
-  #   it "can start a new game" do
-  #     expected = "Enter p to play. Enter q to quit."
-  #     require 'pry'; binding.pry
-  #     expect(@game.start).to eq(expected)
-  #   end
-  # end
 end
+
+  # play with mocks and stubs when it comes to testing in game_spec if we're looking for a stretch
+
+  # Or create a helper method with the sole purpose of printing to the terminal (so that none of our other methods print to terminal)
+
+
+
+# delete DS_store, add to gitignore, commit, partner does same thing. Google remove DS_store from GitHub
