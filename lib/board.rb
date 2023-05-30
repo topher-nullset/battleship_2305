@@ -48,7 +48,7 @@ class Board
       row_letter = row_cells.first.coordinate[0]
       (row_letter + ' ' + row_cells.map { |cell| cell.render(hidden) }.join(' '))
     end
-    puts header + rows.join(" \n") + " \n"
+    header + rows.join(" \n") + " \n"
   end
   
 
