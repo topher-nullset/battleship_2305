@@ -39,7 +39,7 @@ private
   end
 
   def board_setup
-    self.cpu_ship_placement
+    cpu_ship_placement
     p "I have laid out my ships on the grid."
     p "You now need to lay out your two ships and get ready to LOSE, sucker."
     p "The Cruiser is three units long and the Submarine is two units long."
@@ -85,10 +85,10 @@ private
       @p1_board.cells
     elsif @cpu_board.cells[user_input] == nil
       puts "Invalid coordinate. Please try again."
-      self.user_turn
+      user_turn
     elsif @cpu_board.cells[user_input].fired_upon?
       puts "You've already fired on those coordinates. Please try again."
-      self.user_turn
+      user_turn
     end
   end
   
