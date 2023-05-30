@@ -30,13 +30,13 @@ class Cell
   end
 
   def render(hidden=false)
-    if !@ship.nil? && @ship.sunk? == false && fired_upon? == true
+    if !@ship.nil? && !@ship.sunk? && fired_upon? 
       "H"
-    elsif !@ship.nil? && @ship.sunk? == true
+    elsif !@ship.nil? && @ship.sunk? 
         "X"
-    elsif @ship.nil? && fired_upon? == true
+    elsif @ship.nil? && fired_upon? 
         "M"
-    elsif !@ship.nil? && hidden == true 
+    elsif !@ship.nil? && hidden 
         "S"
     else
         "."
