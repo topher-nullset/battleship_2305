@@ -51,7 +51,6 @@ class Board
     header + rows.join(" \n") + " \n"
   end
   
-# Can't test private methods with unit testing, must be integration tests
 
   private
 
