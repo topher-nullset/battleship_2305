@@ -68,14 +68,14 @@ private
 
   def user_turn
     puts "=============COMPUTER BOARD============="
-    # take out render true!
     print @cpu_board.render
     puts "==============PLAYER BOARD=============="
     print @p1_board.render(true)
     puts "Enter the coordinate for your shot with the letter followed by the number (i.e. D4):"
     user_input = gets.chomp
-    if @cpu_board.valid_coordinate?(user_input) && 
-    @cpu_board.cells[user_input].fire_upon
+
+    if @cpu_board.valid_coordinate?(user_input) && @cpu_board.cells[user_input].fired_upon? == false
+      @cpu_board.cells[user_input].fire_upon 
       if @cpu_board.cells[user_input].empty?
         p1_hit_or_miss = "a miss."
       else
@@ -83,8 +83,12 @@ private
       end
       puts "Your shot on #{user_input} was #{p1_hit_or_miss}"
       @p1_board.cells
-    else
-    puts "Invalid coordinate. Please try again."
+    elsif @cpu_board.cells[user_input] == nil
+      puts "Invalid coordinate. Please try again."
+      self.user_turn
+    elsif @cpu_board.cells[user_input].fired_upon?
+      puts "You've already fired on those coordinates. Please try again."
+      self.user_turn
     end
   end
   
