@@ -95,7 +95,6 @@ private
     elsif @p1_cruiser.sunk? && @p1_submarine.sunk?
       puts "Everything as it should be. All your ship are belong to us!"
       start
-    else self.turn
     end
   end
 
