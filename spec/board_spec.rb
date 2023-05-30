@@ -27,7 +27,7 @@ RSpec.describe Board do
     expect(@board.valid_coordinate?('A22')).to be false
     end
   end
-
+# edge case test for C3 C4 C5 (anything that goes off the board)
   describe '#valid_placement?' do
     it 'can place ships with correct number of coordinates' do
       expect(@board.valid_placement?(@cruiser, ["A1", "A2"])).to be false
