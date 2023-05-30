@@ -15,7 +15,14 @@ class Game
   def start
     display_welcome_message
     board_setup
-    turn
+    loop do
+      user_turn
+      break if game_over?
+
+      cpu_turn
+      break if game_over?
+    end
+    display_goodbye_message
   end
 
 private
@@ -59,7 +66,7 @@ private
     p "You have successfully placed your ships. PREPARE TO DIE!"
   end
 
-  def turn
+  def user_turn
     puts "=============COMPUTER BOARD============="
     # take out render true!
     print @cpu_board.render
@@ -67,30 +74,21 @@ private
     print @p1_board.render(true)
     puts "Enter the coordinate for your shot with the letter followed by the number (i.e. D4):"
     user_input = gets.chomp
-      if @cpu_board.valid_coordinate?(user_input)
-      @cpu_board.cells[user_input].fire_upon
-        if @cpu_board.cells[user_input].empty?
-          p1_hit_or_miss = "a miss."
-        else
-          p1_hit_or_miss = "a hit."
-        end
-      cpu_choice = @p1_board.cells.keys.sample
-      until @p1_board.cells[cpu_choice].fired_upon? == false
-        cpu_choice = @p1_board.cells.keys.sample
-      end
-      @p1_board.cells[cpu_choice].fire_upon
-        if @p1_board.cells[cpu_choice].empty?
-          cpu_hit_or_miss = "a miss."
-        else
-          cpu_hit_or_miss = "a hit."
-        end
-      puts "Your shot on #{user_input} was #{p1_hit_or_miss}"
-      puts "My shot on #{cpu_choice} was #{cpu_hit_or_miss}"
-      @p1_board.cells
+    if @cpu_board.valid_coordinate?(user_input) && 
+    @cpu_board.cells[user_input].fire_upon
+      if @cpu_board.cells[user_input].empty?
+        p1_hit_or_miss = "a miss."
       else
-      puts "Invalid coordinate. Please try again."
-      self.turn
+        p1_hit_or_miss = "a hit."
       end
+      puts "Your shot on #{user_input} was #{p1_hit_or_miss}"
+      @p1_board.cells
+    else
+    puts "Invalid coordinate. Please try again."
+    end
+  end
+  
+  def game_over?
     if @cpu_cruiser.sunk? && @cpu_submarine.sunk? 
       puts "Impossible, how did you do this? HOW could you? I have a fam..."
       start
@@ -101,6 +99,20 @@ private
     end
   end
 
+  def cpu_turn
+    cpu_choice = @p1_board.cells.keys.sample
+    until @p1_board.cells[cpu_choice].fired_upon? == false
+      cpu_choice = @p1_board.cells.keys.sample
+    end
+    @p1_board.cells[cpu_choice].fire_upon
+      if @p1_board.cells[cpu_choice].empty?
+        cpu_hit_or_miss = "a miss."
+      else
+        cpu_hit_or_miss = "a hit."
+      end
+    puts "My shot on #{cpu_choice} was #{cpu_hit_or_miss}"
+  end
+    
   def cpu_ship_placement
     cpu_cruiser_choice = @cpu_board.cells.keys.sample(3)
     until @cpu_board.valid_placement?(@cpu_cruiser, cpu_cruiser_choice) == true
