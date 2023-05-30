@@ -36,8 +36,8 @@ class Board
   def place(ship, coordinates)
     if valid_placement?(ship, coordinates)
       coordinates.each do |coord|
-      cell = @cells[coord] 
-      cell.place_ship(ship)
+        cell = @cells[coord]
+        cell.place_ship(ship)
       end
     end
   end
@@ -51,11 +51,12 @@ class Board
     header + rows.join(" \n") + " \n"
   end
   
+# Can't test private methods with unit testing, must be integration tests
 
   private
 
   def empty_cells?(coordinates)
-    coordinates.all? { |coord| @cells[coord].empty? }
+    coordinates.all? { |coord| @cells[coord] && @cells[coord].empty? }
   end
 
   def correct_number_of_coordinates?(ship, coordinates)
