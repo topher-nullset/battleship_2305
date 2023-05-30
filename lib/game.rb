@@ -13,96 +13,105 @@ class Game
   end
 
   def start
-    p "Welcome to BATTLESHIP"
-    p "Enter p to play. Enter q to quit."
-    user_choice = gets.chomp
-    if user_choice == "q"
-      quit
-    else
-      board_setup
-    end
+    display_welcome_message
+    board_setup
+    turn
   end
 
-  def quit
+private
+
+  def display_welcome_message
+    puts "Welcome to BATTLESHIP"
+    puts "Enter 'p' to play. Enter 'q' to quit."
+    user_input = gets.chomp.downcase
+    exit unless user_input == 'p'
+  end
+
+  def display_goodbye_message
     p "Bye bye!"
   end
 
   def board_setup
+    self.cpu_ship_placement
     p "I have laid out my ships on the grid."
     p "You now need to lay out your two ships and get ready to LOSE, sucker."
     p "The Cruiser is three units long and the Submarine is two units long."
     print @p1_board.render
     p "Enter the squares for the cruiser THAT I WILL SINK! (3 spaces)."
     p "Please input your choice in the following format: A1 A2 A3"
-
-    user_cruiser_choice = gets.chomp.split
-    if @p1_board.valid_placement?(@p1_cruiser, user_cruiser_choice)
-      @p1_board.place(@p1_cruiser, user_cruiser_choice)
-      print @p1_board.render(true)
-      p "Enter the squares for the submarine THAT I WILL DESTROY! (2 spaces)."
-      p "Please input your choice in the following format, and be sure not to overlap your cruiser: B1 B2"
-    else
-      p "Invalid placement. Try again."
-      self.board_setup
+    user_cruiser_choice = gets.chomp.upcase.split
+    until @p1_board.valid_placement?(@p1_cruiser, user_cruiser_choice)
+      p "Those are invalid coordinates. Try again."
+      user_cruiser_choice = gets.chomp.upcase.split
     end
-    user_submarine_choice = gets.chomp.split
-      if @p1_board.valid_placement?(@p1_submarine, user_submarine_choice)
-        @p1_board.place(@p1_submarine, user_submarine_choice)
-      else
-        p "Invalid placement. Try again."
-        self.board_setup
-      end
-      print @p1_board.render(true)
-      p "You have successfully placed your ships. PREPARE TO DIE!"
-      self.cpu_ship_placement
-      require 'pry'; binding.pry
-      self.turn
+    @p1_board.place(@p1_cruiser, user_cruiser_choice)
+    print @p1_board.render(true)
+    p "Enter the squares for the submarine THAT I WILL DESTROY! (2 spaces)."
+    p "Please input your choice in the following format, and be sure not to overlap your cruiser: B1 B2"
+    
+    user_submarine_choice = gets.chomp.upcase.split
+    until @p1_board.valid_placement?(@p1_submarine, user_submarine_choice)
+      p "Those are invalid coordinates. Try again."
+      user_submarine_choice = gets.chomp.upcase.split
     end
+    @p1_board.place(@p1_submarine, user_submarine_choice)
+    print @p1_board.render(true)
+    p "You have successfully placed your ships. PREPARE TO DIE!"
   end
 
   def turn
     puts "=============COMPUTER BOARD============="
     # take out render true!
-    print @cpu_board.render(true)
+    print @cpu_board.render
     puts "==============PLAYER BOARD=============="
     print @p1_board.render(true)
     puts "Enter the coordinate for your shot with the letter followed by the number (i.e. D4):"
     user_input = gets.chomp
-    if @cpu_board.valid_coordinate?(user_input)
+      if @cpu_board.valid_coordinate?(user_input)
       @cpu_board.cells[user_input].fire_upon
+        if @cpu_board.cells[user_input].empty?
+          p1_hit_or_miss = "a miss."
+        else
+          p1_hit_or_miss = "a hit."
+        end
       cpu_choice = @p1_board.cells.keys.sample
       until @p1_board.cells[cpu_choice].fired_upon? == false
         cpu_choice = @p1_board.cells.keys.sample
       end
       @p1_board.cells[cpu_choice].fire_upon
-        if @cpu_board.cells[user_input].empty?
-          hit_or_miss = "a miss."
+        if @p1_board.cells[cpu_choice].empty?
+          cpu_hit_or_miss = "a miss."
         else
-          hit_or_miss = "a hit."
+          cpu_hit_or_miss = "a hit."
         end
-      puts "Your shot on #{user_input} was #{hit_or_miss}"
-      puts "My shot on #{cpu_choice} was #{hit_or_miss}"
+      puts "Your shot on #{user_input} was #{p1_hit_or_miss}"
+      puts "My shot on #{cpu_choice} was #{cpu_hit_or_miss}"
       @p1_board.cells
-    else
+      else
       puts "Invalid coordinate. Please try again."
       self.turn
+      end
+    if @cpu_cruiser.sunk? && @cpu_submarine.sunk? 
+      puts "Impossible, how did you do this? HOW could you? I have a fam..."
+      start
+    elsif @p1_cruiser.sunk? && @p1_submarine.sunk?
+      puts "Everything as it should be. All your ship are belong to us!"
+      start
+    else self.turn
     end
-    self.turn
-
-    private
-
-    def cpu_ship_placement
-      cpu_cruiser_choice = @cpu_board.cells.keys.sample(3)
-      until @cpu_board.valid_placement?(@cpu_cruiser, cpu_cruiser_choice) == true
-          cpu_cruiser_choice = @cpu_board.cells.keys.sample(3)
-        end
-        @cpu_board.place(@cpu_cruiser, cpu_crusier_choice)
-
-        cpu_submarine_choice = @cpu_board.cells.keys.sample(2)
-        until @cpu_board.valid_placement?(@cpu_submarine, cpu_submarine_choice) 
-          cpu_submarine_choice = @cpu_board.cells.keys.sample(2)
-        end
-        @cpu_board.place(@cpu_submarine, cpu_submarine_choice)
-    end
-    
   end
+
+  def cpu_ship_placement
+    cpu_cruiser_choice = @cpu_board.cells.keys.sample(3)
+    until @cpu_board.valid_placement?(@cpu_cruiser, cpu_cruiser_choice) == true
+      cpu_cruiser_choice = @cpu_board.cells.keys.sample(3)
+    end
+    @cpu_board.place(@cpu_cruiser, cpu_cruiser_choice)
+    cpu_submarine_choice = @cpu_board.cells.keys.sample(2)
+    until @cpu_board.valid_placement?(@cpu_submarine, cpu_submarine_choice) 
+      cpu_submarine_choice = @cpu_board.cells.keys.sample(2)
+    end
+    @cpu_board.place(@cpu_submarine, cpu_submarine_choice)
+  end
+end
+
