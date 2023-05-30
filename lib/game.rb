@@ -54,16 +54,8 @@ class Game
       end
       print @p1_board.render(true)
       p "You have successfully placed your ships. PREPARE TO DIE!"
-
-      cpu_cruiser_choice = @cpu_board.cells.keys.sample(3)
-      if @cpu_board.valid_placement?(@cpu_cruiser, cpu_cruiser_choice) 
-        @cpu_board.place(@cpu_cruiser, cpu_crusier_choice)
-      end
-      cpu_submarine_choice = @cpu_board.cells.keys.sample(2)
-      if @cpu_board.valid_placement?(@cpu_submarine, cpu_submarine_choice) 
-        @cpu_board.place(@cpu_submarine, cpu_submarine_choice)
-      else
-      end
+      self.cpu_ship_placement
+      require 'pry'; binding.pry
       self.turn
     end
   end
@@ -96,6 +88,21 @@ class Game
       self.turn
     end
     self.turn
-  end
 
-end
+    private
+
+    def cpu_ship_placement
+      cpu_cruiser_choice = @cpu_board.cells.keys.sample(3)
+      until @cpu_board.valid_placement?(@cpu_cruiser, cpu_cruiser_choice) == true
+          cpu_cruiser_choice = @cpu_board.cells.keys.sample(3)
+        end
+        @cpu_board.place(@cpu_cruiser, cpu_crusier_choice)
+
+        cpu_submarine_choice = @cpu_board.cells.keys.sample(2)
+        until @cpu_board.valid_placement?(@cpu_submarine, cpu_submarine_choice) 
+          cpu_submarine_choice = @cpu_board.cells.keys.sample(2)
+        end
+        @cpu_board.place(@cpu_submarine, cpu_submarine_choice)
+    end
+    
+  end
