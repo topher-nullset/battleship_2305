@@ -31,15 +31,15 @@ class Cell
 
   def render(hidden=false)
     if !@ship.nil? && !@ship.sunk? && fired_upon? 
-      "H"
+      "H".colorize(:light_red)
     elsif !@ship.nil? && @ship.sunk? 
-        "X"
+        "X".colorize(:red)
     elsif @ship.nil? && fired_upon? 
-        "M"
+        "M".colorize(:orange)
     elsif !@ship.nil? && hidden 
-        "S"
+        "S".colorize(:green)
     else
-        "."
+        ".".colorize(:blue)
     end    
   end
 
