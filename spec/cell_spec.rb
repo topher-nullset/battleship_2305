@@ -1,5 +1,5 @@
-require './lib/ship'
-require './lib/cell'
+require './spec/spec_helper'
+
 
 RSpec.describe Cell do
   before do
