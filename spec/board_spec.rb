@@ -1,6 +1,4 @@
-require './lib/ship'
-require './lib/cell'
-require './lib/board'
+require './spec/spec_helper'
 
 RSpec.describe Board do
   before do
