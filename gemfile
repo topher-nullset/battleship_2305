@@ -1,1 +1,2 @@
 gem 'simplecov', require: false, group: :test
+gem 'colorize', '~> 0.8.1'
