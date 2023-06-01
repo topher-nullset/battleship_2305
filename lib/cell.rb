@@ -35,7 +35,7 @@ class Cell
     elsif !@ship.nil? && @ship.sunk? 
         "X".colorize(:red)
     elsif @ship.nil? && fired_upon? 
-        "M".colorize(:orange)
+        "M".colorize(:yellow)
     elsif !@ship.nil? && hidden 
         "S".colorize(:green)
     else
