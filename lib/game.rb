@@ -23,7 +23,7 @@ class Game
     end
     display_gameover_message
     board_reset
-    self.start
+    start
   end
 
 private
