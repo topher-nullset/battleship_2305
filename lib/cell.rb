@@ -43,4 +43,18 @@ class Cell
     end    
   end
 
+  def test_render(hidden=false)
+    if !@ship.nil? && !@ship.sunk? && fired_upon? 
+      "H"
+    elsif !@ship.nil? && @ship.sunk? 
+        "X"
+    elsif @ship.nil? && fired_upon? 
+        "M"
+    elsif !@ship.nil? && hidden 
+        "S"
+    else
+        "."
+    end    
+  end
+
 end

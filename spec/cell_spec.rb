@@ -40,21 +40,20 @@ RSpec.describe Cell do
 
   describe "#render" do
     it "can render each cell state" do
-      expect(@cell_1.render).to eq "."
+      expect(@cell_1.render).to eq ".".colorize(:blue)
       @cell_1.fire_upon
-      expect(@cell_1.render).to eq "M"
-      
+      expect(@cell_1.render).to eq "M".colorize(:yellow)
       @cell_2.place_ship(@cruiser)
-      expect(@cell_2.render).to eq "."
-      expect(@cell_2.render(true)).to eq "S"
+      expect(@cell_2.render).to eq ".".colorize(:blue)
+      expect(@cell_2.render(true)).to eq "S".colorize(:green)
       @cell_2.fire_upon
-      expect(@cell_2.render).to eq "H"
+      expect(@cell_2.render).to eq "H".colorize(:light_red)
       
       expect(@cruiser.sunk?).to be false
       @cruiser.hit
       @cruiser.hit
       expect(@cruiser.sunk?).to be true
-      expect(@cell_2.render).to eq "X"
+      expect(@cell_2.render).to eq "X".colorize(:red)
     end
   end
 
