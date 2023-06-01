@@ -15,14 +15,13 @@ class Game
   def start
     display_welcome_message
     board_setup
-    loop do
+    until game_over?
       user_turn
-      break if game_over?
-
       cpu_turn
-      break if game_over?
     end
     display_goodbye_message
+    board_reset
+    self.start
   end
 
 private
@@ -93,27 +92,9 @@ private
   end
   
   def game_over?
-    if @cpu_cruiser.sunk? && @cpu_submarine.sunk? 
-      puts "Impossible, how did you do this? HOW could you? I have a fam..."
-      @p1_board = Board.new
-      @p1_cruiser = Ship.new('cruiser', 3)
-      @p1_submarine = Ship.new('submarine', 2)
-
-      @cpu_board = Board.new
-      @cpu_cruiser = Ship.new('cruiser', 3)
-      @cpu_submarine = Ship.new('submarine', 2)
-      start
-    elsif @p1_cruiser.sunk? && @p1_submarine.sunk?
-      puts "Everything as it should be. All your ship are belong to us!"
-      @p1_board = Board.new
-      @p1_cruiser = Ship.new('cruiser', 3)
-      @p1_submarine = Ship.new('submarine', 2)
-
-      @cpu_board = Board.new
-      @cpu_cruiser = Ship.new('cruiser', 3)
-      @cpu_submarine = Ship.new('submarine', 2)
-      start
-    end
+    (@cpu_cruiser.sunk? && @cpu_submarine.sunk?) || (@p1_cruiser.sunk? && @p1_submarine.sunk?)
+      # puts "Impossible, how did you do this? HOW could you? I have a fam..."
+      # puts "Everything as it should be. All your ship are belong to us!"
   end
 
   def cpu_turn
@@ -141,6 +122,16 @@ private
       cpu_submarine_choice = @cpu_board.cells.keys.sample(2)
     end
     @cpu_board.place(@cpu_submarine, cpu_submarine_choice)
+  end
+
+  def board_reset
+    @p1_board = Board.new
+    @p1_cruiser = Ship.new('cruiser', 3)
+    @p1_submarine = Ship.new('submarine', 2)
+
+    @cpu_board = Board.new
+    @cpu_cruiser = Ship.new('cruiser', 3)
+    @cpu_submarine = Ship.new('submarine', 2)
   end
 end
 
