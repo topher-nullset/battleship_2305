@@ -92,7 +92,7 @@ RSpec.describe Board do
                         "C . . . . \n" +
                         "D . . . . \n"
   
-      expect(@board.render).to eq(expected_output)
+      expect(@board.test_render).to eq(expected_output)
     end
   
     it 'renders the board with hidden ships' do
@@ -104,7 +104,7 @@ RSpec.describe Board do
                         "C . . . . \n" +
                         "D . . . . \n"
   
-      expect(@board.render(true)).to eq(expected_output)
+      expect(@board.test_render(true)).to eq(expected_output)
     end
   end
 end
