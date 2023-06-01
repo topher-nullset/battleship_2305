@@ -46,11 +46,19 @@ class Board
     header = "  1 2 3 4 \n"
     rows = @cells.values.each_slice(4).map do |row_cells|
       row_letter = row_cells.first.coordinate[0]
-      (row_letter + ' ' + row_cells.map { |cell| cell.test_render(hidden) }.join(' '))
+      (row_letter + ' ' + row_cells.map { |cell| cell.render(hidden) }.join(' '))
     end
     header + rows.join(" \n") + " \n"
   end
   
+  def test_render(hidden = false)
+    header = "  1 2 3 4 \n"
+    rows = @cells.values.each_slice(4).map do |row_cells|
+      row_letter = row_cells.first.coordinate[0]
+      (row_letter + ' ' + row_cells.map { |cell| cell.test_render(hidden) }.join(' '))
+    end
+    header + rows.join(" \n") + " \n"
+  end
 
   private
 
