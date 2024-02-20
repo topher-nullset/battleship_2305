@@ -17,44 +17,40 @@ class Cell
   end
 
   def fire_upon
-    if empty?
-      @fired_upon = true 
-    else
-      @ship.hit
-      @fired_upon = true 
-    end
+    @ship.hit unless empty?
+    @fired_upon = true
   end
 
   def fired_upon?
     @fired_upon
   end
 
-  def render(hidden=false)
-    if !@ship.nil? && !@ship.sunk? && fired_upon? 
-      "H".colorize(:light_red)
-    elsif !@ship.nil? && @ship.sunk? 
-        "X".colorize(:red)
-    elsif @ship.nil? && fired_upon? 
-        "M".colorize(:yellow)
-    elsif !@ship.nil? && hidden 
-        "S".colorize(:green)
+  def render(hidden: false)
+    if !@ship.nil? && !@ship.sunk? && fired_upon?
+      'H'.colorize(:light_red)
+    elsif !@ship.nil? && @ship.sunk?
+      'X'.colorize(:red)
+    elsif @ship.nil? && fired_upon?
+      'M'.colorize(:yellow)
+    elsif !@ship.nil? && hidden
+      'S'.colorize(:green)
     else
-        ".".colorize(:blue)
-    end    
+      '.'.colorize(:blue)
+    end
   end
 
-  def test_render(hidden=false)
-    if !@ship.nil? && !@ship.sunk? && fired_upon? 
-      "H"
-    elsif !@ship.nil? && @ship.sunk? 
-        "X"
-    elsif @ship.nil? && fired_upon? 
-        "M"
-    elsif !@ship.nil? && hidden 
-        "S"
+  def test_render(hidden: false)
+    if !@ship.nil? && !@ship.sunk? && fired_upon?
+      'H'
+    elsif !@ship.nil? && @ship.sunk?
+      'X'
+    elsif @ship.nil? && fired_upon?
+      'M'
+    elsif !@ship.nil? && hidden
+      'S'
     else
-        "."
-    end    
+      '.'
+    end
   end
-
 end
+

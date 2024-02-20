@@ -1,5 +1,6 @@
 GEM
   specs:
+    colorize (1.1.0)
     docile (1.4.0)
     simplecov (0.22.0)
       docile (~> 1.1)
@@ -12,6 +13,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  colorize
   simplecov
 
 BUNDLED WITH
