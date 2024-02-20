@@ -81,7 +81,7 @@ class Game
     sleep(0.3)
     puts '=======PLAYER BOARD======='
     sleep(0.3)
-    print @p1_board.render(true)
+    print @p1_board.render(hidden: true)
     sleep(0.5)
     p 'Enter the squares for the submarine THAT I WILL DESTROY! (2 spaces).'
     sleep(0.5)
@@ -92,7 +92,7 @@ class Game
       user_submarine_choice = gets.chomp.upcase.split
     end
     @p1_board.place(@p1_submarine, user_submarine_choice)
-    print @p1_board.render(true)
+    print @p1_board.render(hidden: true)
     p 'You have successfully placed your ships. PREPARE TO DIE!'
   end
 
@@ -103,7 +103,7 @@ class Game
     print @cpu_board.render
     puts '=======PLAYER BOARD======='
     sleep(0.3)
-    print @p1_board.render(true)
+    print @p1_board.render(hidden: true)
   end
 
   def user_turn
